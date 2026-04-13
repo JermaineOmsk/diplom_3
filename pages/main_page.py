@@ -2,6 +2,8 @@ import pytest
 import allure
 from locators.main_page_locators import *
 from locators.headers_locators import *
+from locators.main_page_locators import *
+from locators.personal_account_locators import *
 from selenium.webdriver.common.keys import Keys
 from data import *
 from pages.base_page import *
@@ -50,6 +52,7 @@ class MainPage(BasePage,):
     def add_filling_to_order_basket(self):
         return self.drag_and_drop_element(locators.spicy_sauce , locators.order_basket)
 
+    @allure.step('Ожидание увеличения счетчика ингредиента')
     def wait_for_ingredient__count_raise(self):    
         return self.wait_for_visibility(locators.spicy_sauce_count)
 
@@ -64,4 +67,14 @@ class MainPage(BasePage,):
         self.click(locators.button_close_window)
         return order_number
 
-   
+    
+    @allure.step('Вход в личный кабинет')
+    def login(self):
+        self.find(HeaderLocators.button_personal_account)
+        self.click(HeaderLocators.button_personal_account)
+        self.wait_for_visibility(PersonalAccountLocators.enter)
+        self.find(PersonalAccountLocators.email).send_keys(User.mail)
+        self.find(PersonalAccountLocators.password).send_keys(User.valid_password)
+        self.find(PersonalAccountLocators.button_enter)
+        self.click(PersonalAccountLocators.button_enter)
+        self.wait_for_visibility(locators.button_place_order)
