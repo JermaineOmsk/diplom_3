@@ -3,7 +3,7 @@ import allure
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
-#from locators.base_page_locators import BasePageElements
+
 
 class BasePage:
     def __init__(self, driver):
@@ -71,9 +71,10 @@ class BasePage:
                    source.dispatchEvent(evt);
                """, element_from, element_to)
 
-        #actions = ActionChains(self.driver)
-        #actions.drag_and_drop(element_from, element_to).perform()    
-
+ 
+    @allure.step('Клик по элементу при помощи js')
     def click_with_js(self, locator):
         element = self.find(locator)
         self.driver.execute_script("arguments[0].click();", element)    
+
+        
